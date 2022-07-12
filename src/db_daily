@@ -1,0 +1,35 @@
+CREATE TABLE usuario (
+    idusuario SERIAL,
+    nome VARCHAR (100) NOT NULL,
+    email VARCHAR (45) NOT NULL,
+    senha VARCHAR (45) NOT NULL,
+    pt_recompensa INT NOT NULL,
+    imagem INT NOT NULL,
+    PRIMARY KEY (idusuario)
+);
+
+CREATE TABLE conquista(
+    idConquista SERIAL,
+    imagem INT NOT NULL,
+    descricao VARCHAR (1000) NOT NULL,
+    primary key(idConquista)
+);
+
+CREATE TABLE tarefa (
+    idTarefa SERIAL,
+    nome VARCHAR (45) NOT NULL,
+    descricao VARCHAR (1000) NOT NULL,
+    data_tarefa DATE,
+    prioridade INT NOT NULL,
+    PRIMARY KEY (idTarefa)
+);
+
+CREATE TABLE grupo (
+    idGrupo SERIAL,
+    idusuario INT NOT NULL,
+    nome VARCHAR (100) NOT NULL,
+    descricao VARCHAR (1000) NOT NULL,
+    FOREIGN KEY (idusuario) REFERENCES usuario (idusuario),
+    PRIMARY KEY (idGrupo)
+    
+);
