@@ -32,12 +32,6 @@ app.post('/tarefa', routes.createTarefa)
 app.put('/tarefa/:id', routes.updateTarefa)
 app.delete('/tarefa/:id', routes.deleteTarefa)
 
-app.get('/grupo', routes.getGrupo)
-app.get('/grupo/:id', routes.getGrupoById)
-app.post('/grupo', routes.createGrupo)
-app.put('/grupo/:id', routes.updateGrupo)
-app.delete('/grupo/:id', routes.deleteGrupo)
-
 app.listen(PORT, () => {
     console.log(`Server is running in http://localhost:${PORT}`)
 })

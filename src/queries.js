@@ -37,15 +37,7 @@ const getTarefa = (request, response) => {
         response.status(200).json(results.rows)
     })
 }
-const getGrupo = (request, response) => {
-    db.query('SELECT * FROM GRUPO ORDER BY IDGRUPO',
-    (error, results)=> {
-        if(error){
-            throw error
-        }
-        response.status(200).json(results.rows)
-    })
-}
+
 const getUsuarioById = (request, response) => {
     const id = parseInt(request.params.id)
 
@@ -79,24 +71,12 @@ const getTarefaById = (request, response) => {
         response.status(200).json(results.rows)
     })
 }
-const getGrupoById = (request, response) => {
-    const id = parseInt(request.params.id)
-
-    db.query('SELECT * FROM GRUPO WHERE IDGRUPO = $1', [id],
-    (error, results) => {
-        if(error){
-            throw error
-        }
-        response.status(200).json(results.rows)
-    })
-}
-
 const createUsuario = (request, response) => {
     try{
-        const {senha, email, nome} = request.body
+        const {senha, email, apelido} = request.body
 
-        db.query('INSERT INTO USUARIO(senha, email, nome) VALUES($1, $2, $3)',
-        [senha, email, nome], (error, results) => {
+        db.query('INSERT INTO USUARIO(senha, email, apelido) VALUES($1, $2, $3)',
+        [senha, email, apelido], (error, results) => {
             if (error) {
                 throw error
             }
@@ -131,16 +111,16 @@ const createConquista = (request, response) => {
 }
 const createTarefa = (request, response) => {
     try{
-        const {nome, descricao, data_tarefa, prioridade} = request.body
-
-        db.query('INSERT INTO TAREFA (nome, descricao, data_tarefa, prioridade) VALUES($1, $2, $3, $4)',
-        [nome, descricao, data_tarefa, prioridade], (error, results) => {
+        const {descricao, pontos_recompensa} = request.body
+        db.query('INSERT INTO TAREFA (descricao, pontos_recompensa) VALUES($1, $2)',
+        [descricao, pontos_recompensa], (error, results) => {
             if (error) {
                 throw error
             }
             response.status(201).send('Tarefa adicionada')
         })
     }catch(error){
+        console.log(pontos_recompensa);
         console.log('Erro: ' + error)
         response.status(400).send({
             status:400,
@@ -148,31 +128,12 @@ const createTarefa = (request, response) => {
         })
     }
 }
-const createGrupo = (request, response) => {
-    try{
-        const {idusuario, nome, descricao} = request.body
-
-        db.query('INSERT INTO GRUPO (idusuario, nome, descricao) VALUES($1, $2, $3, $4)',
-        [idusuario, nome, descricao], (error, results) => {
-            if (error) {
-                throw error
-            }
-            response.status(201).send('Grupo adicionado')
-        })
-    }catch(error){
-        console.log('Erro: ' + error)
-        response.status(400).send({
-            status:400,
-            message:'Error ao inserir o grupo.' + error
-        })
-    }
-}
 const updateUsuario = (request, response) => {
     const idusuario = parseInt(request.params.id)
-    const {senha, email, nome} = request.body
+    const {senha, email, nome, pontos_recompensa} = request.body
 
-    db.query('UPDATE usuario SET senha = $1,email = $2, nome = $3 WHERE idusuario = $4',
-    [senha, email, nome, idusuario], (error, results) => {
+    db.query('UPDATE usuario SET senha = $1,email = $2, nome = $3, pontos_recompensa = $4 WHERE idusuario = $5',
+    [senha, email, nome, idusuario, pontos_recompensa], (error, results) => {
         if (error) {
             throw error
         }
@@ -193,26 +154,14 @@ const updateConquista = (request, response) => {
 }
 const updateTarefa = (request, response) => {
     const idtarefa = parseInt(request.params.id)
-    const {nome, descricao, data_tarefa, prioridade} = request.body
+    const {descricao, pontos_recompensa} = request.body
 
-    db.query('UPDATE TAREFA SET NOME = $1, DESCRICAO = $2, DATA_TAREFA = $3, PRIORIDADE = $4 WHERE idtarefa = $5',
-    [nome, descricao, data_tarefa, prioridade], (error, results) => {
+    db.query('UPDATE TAREFA SET DESCRICAO = $1, PONTOS_RECOMPENSA = $2 WHERE idtarefa = $3',
+    [descricao, pontos_recompensa, idtarefa], (error, results) => {
         if (error) {
             throw error
         }
         response.status(201).send('Tarefa atualizada')
-    })
-}
-const updateGrupo = (request, response) => {
-    const idgrupo = parseInt(request.params.id)
-    const {idusuario, nome, descricao} = request.body
-
-    db.query('UPDATE CONQUISTA SET IDUSUARIO = $1, NOME = $2, DESCRICAO = $3 WHERE idgrupo = $4',
-    [idusuario, nome, descricao], (error, results) => {
-        if (error) {
-            throw error
-        }
-        response.status(201).send('Grupo atualizado')
     })
 }
 const deleteUsuario = (request, response) => {
@@ -248,36 +197,20 @@ const deleteTarefa = (request, response) => {
         response.status(201).send('deletada')
     })
 }
-const deleteGrupo = (request, response) => {
-    const idgrupo = parseInt(request.params.id)
-
-    db.query('DELETE FROM grupo WHERE idgrupo = $1', [idgrupo],
-    (error, results) => {
-        if (error) {
-            throw error
-        }
-        response.status(201).send('deletada')
-    })
-}
 module.exports = {
     getUsuario,
     getConquista,
     getTarefa,
-    getGrupo,
     getUsuarioById,
     getConquistaById,
     getTarefaById,
-    getGrupoById,
     createUsuario,
     createConquista,
     createTarefa,
-    createGrupo,
     updateUsuario,
     updateConquista,
     updateTarefa,
-    updateGrupo,
     deleteUsuario,
     deleteConquista,
     deleteTarefa,
-    deleteGrupo
 }
