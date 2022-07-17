@@ -5,7 +5,7 @@ const db = new Pool({
     host:'localhost',
     database:'dailygrind_db',
     user:'postgres',
-    password:'senai',
+    password:'123456',
     port: 5432
 })
 
@@ -130,10 +130,10 @@ const createTarefa = (request, response) => {
 }
 const updateUsuario = (request, response) => {
     const idusuario = parseInt(request.params.id)
-    const {senha, email, nome, pontos_recompensa} = request.body
+    const {senha, email, apelido, pontos_recompensa} = request.body
 
-    db.query('UPDATE usuario SET senha = $1,email = $2, nome = $3, pontos_recompensa = $4 WHERE idusuario = $5',
-    [senha, email, nome, idusuario, pontos_recompensa], (error, results) => {
+    db.query('UPDATE usuario SET senha = $1,email = $2, apelido = $3, pontos_recompensa = $4 WHERE idusuario = $5',
+    [senha, email, apelido, pontos_recompensa,  idusuario], (error, results) => {
         if (error) {
             throw error
         }
