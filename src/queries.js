@@ -29,7 +29,8 @@ const getConquista = (request, response) => {
 }
 
 const getTarefa = (request, response) => {
-    db.query('SELECT * FROM TAREFA ORDER BY IDTAREFA',
+    const id = parseInt(request.params.id)
+    db.query('SELECT * FROM TAREFA WHERE IDUSUARIO = $1  ORDER BY idtarefa', [id],
     (error, results)=> {
         if(error){
             throw error
@@ -73,10 +74,10 @@ const getTarefaById = (request, response) => {
 }
 const createUsuario = (request, response) => {
     try{
-        const {senha, email, apelido} = request.body
+        const {senha, email, apelido, pontos_recompensa} = request.body
 
-        db.query('INSERT INTO USUARIO(senha, email, apelido) VALUES($1, $2, $3)',
-        [senha, email, apelido], (error, results) => {
+        db.query('INSERT INTO USUARIO(senha, email, apelido, pontos_recompensa) VALUES($1, $2, $3, $4)',
+        [senha, email, apelido, pontos_recompensa], (error, results) => {
             if (error) {
                 throw error
             }
@@ -111,9 +112,9 @@ const createConquista = (request, response) => {
 }
 const createTarefa = (request, response) => {
     try{
-        const {descricao, pontos_recompensa} = request.body
-        db.query('INSERT INTO TAREFA (descricao, pontos_recompensa) VALUES($1, $2)',
-        [descricao, pontos_recompensa], (error, results) => {
+        const {descricao, pontos_recompensa, idusuario} = request.body
+        db.query('INSERT INTO TAREFA (descricao, pontos_recompensa, idusuario) VALUES($1, $2, $3)',
+        [descricao, pontos_recompensa, idusuario], (error, results) => {
             if (error) {
                 throw error
             }
