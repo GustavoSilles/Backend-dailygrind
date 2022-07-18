@@ -27,7 +27,7 @@ app.put('/conquista/:id', routes.updateConquista)
 app.delete('/conquista/:id', routes.deleteConquista)
 
 app.get('/tarefa/:id', routes.getTarefa)
-app.get('/tarefa/:id', routes.getTarefaById)
+app.get('/tarefa/byid/:idtarefa', routes.getTarefaById)
 app.post('/tarefa', routes.createTarefa)
 app.put('/tarefa/:id', routes.updateTarefa)
 app.delete('/tarefa/:id', routes.deleteTarefa)

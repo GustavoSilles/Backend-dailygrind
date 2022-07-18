@@ -62,9 +62,9 @@ const getConquistaById = (request, response) => {
     })
 }
 const getTarefaById = (request, response) => {
-    const id = parseInt(request.params.id)
+    const idtarefa = parseInt(request.params.idtarefa)
 
-    db.query('SELECT * FROM TAREFA WHERE IDTAREFA = $1', [id],
+    db.query('SELECT * FROM TAREFA WHERE IDTAREFA = $1', [idtarefa],
     (error, results) => {
         if(error){
             throw error
